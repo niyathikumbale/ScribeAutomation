@@ -70,6 +70,14 @@ recognition.onerror = function(event) {
 /*-----------------------------
       App buttons and input 
 ------------------------------*/
+document.body.onkeydown = function(e) {
+    if (e.keyCode == 13) {
+        if (noteContent.length) {
+            noteContent += ' ';
+        }
+        speak();
+    }
+}
 
 document.body.onkeydown = function(e) {
     if (e.keyCode == 32) {
@@ -204,3 +212,39 @@ function getAllNotes() {
 function deleteNote(dateTime) {
     localStorage.removeItem('note-' + dateTime);
 }
+
+function checkCompatibility () {
+    if(!('speechSynthesis' in window))
+    {
+        alert('Your browser is not compatible');
+    }
+};
+
+
+
+var myText = document.getElementById('myText');
+var voiceMap = [];
+function loadVoices(){
+    var voices = speechSynthesis.getVoices;
+    for(var i = 0; i < voices.length;i++)
+    {
+        var voice = voices[i];
+        var option = document.createElement('option');
+        option.value = voice.name;
+        option.innerHTML = voice.name;
+        voiceOptions.appendChild(option);
+        voiceMap[voice.name]= voice;
+    };
+};
+window.speechSynthesis.onvoiceschanged = function(e){
+    loadVoices();
+};
+function speak () {
+    var msg = new SpeechSynthesisUtterance();
+    //msg.volume = volumeSlider.value;
+    //msg.voice = voiceMap[voiceOptions.value];
+    //msg.rate = rateSlider.value;
+    //msg.pitch = pitchSlider.value;
+    msg.text = myText.value;
+    window.speechSynthesis.speak(msg);
+};
