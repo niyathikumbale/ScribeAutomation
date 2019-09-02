@@ -16,16 +16,15 @@
             <h1>Voice Controlled Examination 2019</h1>
             <!--<p class="page-description">A tiny app that allows you to take notes by recording your voice</p>
             <p><a class="tz-link" href="https://tutorialzine.com/2017/08/converting-from-speech-to-text-with-javascript">Read the full article on Tutorialzine »</a></p>
-
             <h3 class="no-browser-support">Sorry, Your Browser Doesn't Support the Web Speech API. Try Opening This Demo In Google Chrome.</h3> -->
 
             <div class="app"> 
                 
-                <textarea id="myText" onkeypress="speak();" >Question 1 What is photosynthesis? </textarea>
+                <textarea id="myText" onkeypress="speak();" >Question 1: What is photosynthesis? </textarea>
                 
                 <!-- <p>Q1. What is your name? </p>-->
                 <div class="input-single">
-                    <textarea id="note-textarea" placeholder="Press the spacebar to start recording." rows="5">Answer 1: </textarea>
+                    <textarea id="note-textarea" placeholder="Press the spacebar to start recording." rows="5" onkeypress="reread();">Answer 1: </textarea>
                 </div>         
                <!--<button id="start-record-btn" title="Start Recording">Start Recognition</button>
                 <button id="pause-record-btn" title="Pause Recording">Pause Recognition</button>
