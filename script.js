@@ -70,6 +70,15 @@ recognition.onerror = function(event) {
 /*-----------------------------
       App buttons and input 
 ------------------------------*/
+document.body.onkeypress = function(e) {
+    if (e.keyCode == 17) {
+        if (noteContent.length) {
+            noteContent += ' ';
+        }
+        reread();
+    }
+}
+
 document.body.onkeydown = function(e) {
     if (e.keyCode == 13) {
         if (noteContent.length) {
@@ -223,6 +232,7 @@ function checkCompatibility () {
 
 
 var myText = document.getElementById('myText');
+var ans = document.getElementById('note-textarea');
 var voiceMap = [];
 function loadVoices(){
     var voices = speechSynthesis.getVoices;
@@ -248,3 +258,9 @@ function speak () {
     msg.text = myText.value;
     window.speechSynthesis.speak(msg);
 };
+
+function reread(){
+	var txtmsg= new SpeechSynthesisUtterance();
+	txtmsg.text = ans.value;
+	window.speechSynthesis.speak(txtmsg);
+}
