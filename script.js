@@ -107,50 +107,11 @@ document.addEventListener('keydown', function(e) {
 }, false);
 
 
+
 // Sync the text inside the text area with the noteContent variable.
 noteTextarea.on('input', function() {
     noteContent = $(this).val();
 })
-
-document.addEventListener('keydown', function(e) {
-    // This would be triggered by pressing CTRL + A
-    if (e.keyCode == 18) {
-        recognition.stop();
-
-        if (!noteContent.length) {
-            instructions.text('Could not save empty note. Please add a message to your note.');
-        } else {
-            // Save note to localStorage.
-            // The key is the dateTime with seconds, the value is the content of the note.
-            saveNote(new Date().toLocaleString(), noteContent);
-
-            // Reset variables and update UI.
-            noteContent = '';
-            renderNotes(getAllNotes());
-            noteTextarea.val('');
-            instructions.text('Note saved successfully.');
-        }
-
-    }
-}, false);
-
-notesList.on('click', function(e) {
-    e.preventDefault();
-    var target = $(e.target);
-
-    // Listen to the selected note.
-    if (target.hasClass('listen-note')) {
-        var content = target.closest('.note').find('.content').text();
-        readOutLoud(content);
-    }
-
-    // Delete note.
-    if (target.hasClass('delete-note')) {
-        var dateTime = target.siblings('.date').text();
-        deleteNote(dateTime);
-        target.closest('.note').remove();
-    }
-});
 
 
 
@@ -176,55 +137,8 @@ function readOutLoud(message) {
       Helper Functions 
 ------------------------------*/
 
-function renderNotes(notes) {
-    var html = '';
-    if (notes.length) {
-        notes.forEach(function(note) {
-            html += `<li class="note">
-        <p class="header">
-          <span class="date">${note.date}</span>
-          <a href="#" class="listen-note" title="Listen to Note">Listen to Note</a>
-          <a href="#" class="delete-note" title="Delete">Delete</a>
-        </p>
-        <p class="content">${note.content}</p>
-      </li>`;
-        });
-    } else {
-        html = '<li><p class="content">You don\'t have any notes yet.</p></li>';
-    }
-    notesList.html(html);
-}
-
-
-function saveNote(dateTime, content) {
-    localStorage.setItem('note-' + dateTime, content);
-}
-
-
-function getAllNotes() {
-    var notes = [];
-    var key;
-    for (var i = 0; i < localStorage.length; i++) {
-        key = localStorage.key(i);
-
-        if (key.substring(0, 5) == 'note-') {
-            notes.push({
-                date: key.replace('note-', ''),
-                content: localStorage.getItem(localStorage.key(i))
-            });
-        }
-    }
-    return notes;
-}
-
-
-function deleteNote(dateTime) {
-    localStorage.removeItem('note-' + dateTime);
-}
-
-function checkCompatibility () {
-    if(!('speechSynthesis' in window))
-    {
+function checkCompatibility() {
+    if (!('speechSynthesis' in window)) {
         alert('Your browser is not compatible');
     }
 };
@@ -234,22 +148,23 @@ function checkCompatibility () {
 var myText = document.getElementById('myText');
 var ans = document.getElementById('note-textarea');
 var voiceMap = [];
-function loadVoices(){
+
+function loadVoices() {
     var voices = speechSynthesis.getVoices;
-    for(var i = 0; i < voices.length;i++)
-    {
+    for (var i = 0; i < voices.length; i++) {
         var voice = voices[i];
         var option = document.createElement('option');
         option.value = voice.name;
         option.innerHTML = voice.name;
         voiceOptions.appendChild(option);
-        voiceMap[voice.name]= voice;
+        voiceMap[voice.name] = voice;
     };
 };
-window.speechSynthesis.onvoiceschanged = function(e){
+window.speechSynthesis.onvoiceschanged = function(e) {
     loadVoices();
 };
-function speak () {
+
+function speak() {
     var msg = new SpeechSynthesisUtterance();
     //msg.volume = volumeSlider.value;
     //msg.voice = voiceMap[voiceOptions.value];
@@ -259,8 +174,8 @@ function speak () {
     window.speechSynthesis.speak(msg);
 };
 
-function reread(){
-	var txtmsg= new SpeechSynthesisUtterance();
-	txtmsg.text = ans.value;
-	window.speechSynthesis.speak(txtmsg);
+function reread() {
+    var txtmsg = new SpeechSynthesisUtterance();
+    txtmsg.text = ans.value;
+    window.speechSynthesis.speak(txtmsg);
 }
