@@ -272,10 +272,6 @@ window.speechSynthesis.onvoiceschanged = function(e){
 };
 function speak () {
     var msg = new SpeechSynthesisUtterance();
-    //msg.volume = volumeSlider.value;
-    //msg.voice = voiceMap[voiceOptions.value];
-    //msg.rate = rateSlider.value;
-    //msg.pitch = pitchSlider.value;
     msg.text = myText.value;
     window.speechSynthesis.speak(msg);
 };
